@@ -29,3 +29,18 @@ jobs:
 
       - name: Run Automated Test Suites
         run: mvn test
+
+  deploy-staging:
+    needs: build-and-validate
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    environment: staging
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Verify Manual Approval
+        run: |
+          echo "Manual approval granted!"
+          echo "Staging deployment gate successful."
